@@ -59,7 +59,6 @@ Para obtener tu API token:
 const testCases = [
   {
     title: "Verify login with valid credentials",
-    description: "Test de login exitoso",
     severity: 2, // 1=blocker, 2=critical, 3=major, 4=normal, 5=minor, 6=trivial
     priority: 1, // 1=high, 2=medium, 3=low
     type: 3, // 2=functional, 3=smoke, 4=regression
@@ -138,6 +137,7 @@ qase-bulk-automation/
 ├── src/
 │   ├── qase-api.ts       # Cliente de API de Qase
 │   └── bulk-create.ts    # Script principal de creación
+|   |__step-parser.ts     # Expected results inteligentes autogenerados
 ├── .env                  # Variables de entorno (no commitear)
 ├── .gitignore
 ├── package.json

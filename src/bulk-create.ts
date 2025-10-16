@@ -1,6 +1,6 @@
 import * as dotenv from 'dotenv';
 import { QaseAPI } from './qase-api';
-import { createSteps } from './utils/../step-parser';
+import { createSteps } from './utils/step-parser';
 
 dotenv.config();
 
@@ -56,7 +56,7 @@ async function main() {
       `),
       tags: ["logout"]
     }
-    // Agregá más test cases acá...
+    // Agregá más test cases acá máximo 10 en total...
   ];
 
   console.log(`📊 Total de test cases a crear: ${testCases.length}\n`);

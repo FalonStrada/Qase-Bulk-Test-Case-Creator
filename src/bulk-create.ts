@@ -1,6 +1,7 @@
 import * as dotenv from 'dotenv';
 import { QaseAPI } from './qase-api';
 import { createSteps } from './utils/step-parser';
+import { executeBulkCreation } from './utils/bulk-manager';
 
 dotenv.config();
 
@@ -59,20 +60,8 @@ async function main() {
     // Agregá más test cases acá máximo 10 en total...
   ];
 
-  console.log(`📊 Total de test cases a crear: ${testCases.length}\n`);
-
-  // Crear todos los test cases
-  const results = await qase.createTestCasesBatch(testCases);
-
-  const successful = results.filter(Boolean).length;
-  console.log(`\n✅ Resultado: ${successful}/${testCases.length} test cases creados exitosamente`);
-
-  if (successful < testCases.length) {
-    console.warn(`⚠️  ${testCases.length - successful} test cases fallaron`);
-  }
+ // Esta función maneja todo: selección de suite, preview, confirmación y creación
+  await executeBulkCreation(qase, testCases);
 }
 
-main().catch(error => {
-  console.error('❌ Error:', error);
-  process.exit(1);
-});
+main(); 

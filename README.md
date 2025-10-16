@@ -133,17 +133,21 @@ La función `createSteps()` genera automáticamente los expected results basánd
 ## 📁 Estructura del proyecto
 
 ```
-qase-bulk-automation/
+qase-bulk-automation
 src/
-├── qase-api.ts             # API client
-├── bulk-create.ts          # Script principal de creación
-├── utils/
-│   └── step-parser.ts      # autogenerador de Expected results
-├── .env                    # Variables de entorno (no commitear)
+├── qase-api.ts                # API client
+├── bulk-create.ts             # Script principal de creación de TC
+└── utils/
+|    ├── step-parser.ts        # autogenerador de Expected
+|    ├── suite-selector.ts
+|    ├── prompt.ts
+|    └── bulk-manager.ts
+├── .env                        # Variables de entorno (no commitear)
 ├── .gitignore
 ├── package.json
 ├── tsconfig.json
 └── README.md
+
 ```
 
 ## 🔒 Seguridad

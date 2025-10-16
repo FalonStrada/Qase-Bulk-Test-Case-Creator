@@ -111,6 +111,17 @@ export interface QaseResponse<T> {
   result: T;
 }
 
+export interface Suite {
+  id: number;
+  title: string;
+  description: string;
+  preconditions: string | null;
+  parent_id: number | null;
+  cases_count: number;
+  created_at: string;
+  updated_at: string;
+}
+
 // ========== QASE API CLIENT ==========
 
 export class QaseAPI {
@@ -166,6 +177,18 @@ export class QaseAPI {
     } catch (error) {
       this.handleError(error, 'crear suite');
       return null;
+    }
+  }
+
+  async getSuites(): Promise<Suite[]> {
+    try {
+      const response = await this.client.get<QaseResponse<{ entities: Suite[] }>>(
+        `/suite/${this.projectCode}`
+      );
+      return response.data.result.entities;
+    } catch (error) {
+      this.handleError(error, 'obtener suites');
+      return [];
     }
   }
 

@@ -91,10 +91,10 @@ Elegí una opción: ...
 
 5. Confirmar creación
 
-```
+````
 
 
-### Generación automática de Expected Results
+## 🤖 Generación automática de Expected Results
 
 La función `createSteps()` genera automáticamente los expected results basándose en palabras clave:
 
@@ -104,24 +104,26 @@ La función `createSteps()` genera automáticamente los expected results basánd
 - **"verify"** → "[condición] is correct"
 - **Por defecto** → "Step completed successfully"
 
+---
+
 ## 📁 Estructura del proyecto
 
-```
-
+```bash
 qase-bulk-automation
-src/
-├── qase-api.ts # API client
-├── bulk-create.ts # Script principal de creación de TC
-└── utils/
-| ├── step-parser.ts # autogenerador de Expected
-| ├── suite-selector.ts
-| ├── prompt.ts
-| └── bulk-manager.ts
-├── .env # Variables de entorno (no commitear)
+├── src/
+│   ├── qase-api.ts             # API client
+│   ├── bulk-create.ts          # Script principal de creación de TC
+│   └── utils/
+│       ├── step-parser.ts      # Autogenerador de Expected
+│       ├── suite-selector.ts
+│       ├── prompt.ts
+│       └── bulk-manager.ts
+├── .env                        # Variables de entorno (no commitear)
 ├── .gitignore
 ├── package.json
 ├── tsconfig.json
 └── README.md
+
 
 ````
 
@@ -146,7 +148,7 @@ La herramienta incluye un delay de 100ms entre cada request para respetar los l�
 
 ```bash
 npm run build
-````
+```
 
 ### Ejecutar en modo desarrollo:
 

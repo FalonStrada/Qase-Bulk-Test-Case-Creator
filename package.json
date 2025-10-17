@@ -1,21 +1,25 @@
 {
-    "name": "qase-bulk",
-    "version": "1.0.0",
-    "main": "index.js",
-    "scripts": {
-        "bulk": "ts-node src/bulk-create.ts"
-    },
-    "keywords": [],
-    "author": "",
-    "license": "ISC",
-    "description": "",
-    "dependencies": {
-        "axios": "^1.6.0",
-        "dotenv": "^16.3.1"
-    },
-    "devDependencies": {
-        "@types/node": "^20.19.19",
-        "ts-node": "^10.9.0",
-        "typescript": "^5.3.0"
-    }
+  "name": "qase-bulk-test-case-creator",
+  "version": "1.0.0",
+  "description": "Herramienta de automatización para creación masiva de test cases en Qase",
+  "license": "MIT",
+  "author": "FalonStrada",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/FalonStrada/Qase-Bulk-Test-Case-Creator.git"
+  },
+  "main": "index.js",
+  "scripts": {
+    "bulk": "ts-node src/bulk-create.ts"
+  },
+  "keywords": [],
+  "dependencies": {
+    "axios": "^1.6.0",
+    "dotenv": "^16.3.1"
+  },
+  "devDependencies": {
+    "@types/node": "^20.19.19",
+    "ts-node": "^10.9.0",
+    "typescript": "^5.3.0"
+  }
 }

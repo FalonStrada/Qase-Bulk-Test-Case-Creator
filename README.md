@@ -91,9 +91,6 @@ Elegí una opción: ...
 
 5. Confirmar creación
 
-````
-
-
 ## 🤖 Generación automática de Expected Results
 
 La función `createSteps()` genera automáticamente los expected results basándose en palabras clave:
@@ -103,8 +100,6 @@ La función `createSteps()` genera automáticamente los expected results basánd
 - **"enter", "type"** → "Data is entered correctly"
 - **"verify"** → "[condición] is correct"
 - **Por defecto** → "Step completed successfully"
-
----
 
 ## 📁 Estructura del proyecto
 
@@ -125,7 +120,7 @@ qase-bulk-automation
 └── README.md
 
 
-````
+```
 
 ## 🔒 Seguridad
 

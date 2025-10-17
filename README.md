@@ -109,7 +109,7 @@ qase-bulk-automation
 │   ├── qase-api.ts             # API client
 │   ├── bulk-create.ts          # Script principal de creación de TC
 │   └── utils/
-│       ├── step-parser.ts      # Autogenerador de Expected
+│       ├── step-parser.ts      # Autogenerador de Expected results
 │       ├── suite-selector.ts
 │       ├── prompt.ts
 │       └── bulk-manager.ts

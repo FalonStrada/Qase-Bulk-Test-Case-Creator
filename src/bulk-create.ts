@@ -18,9 +18,9 @@ async function main() {
   const testCases = [
     {
       title: "Verify login with valid credentials",
-      severity: 0,  // critical
-      priority: 0,  // high
-      type: 3,      // smoke
+      severity: 0,  
+      priority: 0,  
+      type: 2,      // functional
       steps: createSteps(`
         Navigate to login page
         Enter valid username
@@ -46,8 +46,8 @@ async function main() {
     },
     {
       title: "Verify logout functionality",
-      severity: 0,  // major
-      priority: 0,  // medium
+      severity: 0,  
+      priority: 0,  
       type: 2,
       steps: createSteps(`
         User is logged in

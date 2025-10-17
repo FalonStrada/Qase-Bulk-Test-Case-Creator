@@ -59,9 +59,6 @@ Para obtener tu API token:
 const testCases = [
   {
     title: "Verify login with valid credentials",
-    severity: 2, // 1=blocker, 2=critical, 3=major, 4=normal, 5=minor, 6=trivial
-    priority: 1, // 1=high, 2=medium, 3=low
-    type: 3, // 2=functional, 3=smoke, 4=regression
     steps: createSteps(`
       Navigate to login page
       Enter valid username
@@ -69,7 +66,6 @@ const testCases = [
       Click login button
       Verify user is redirected to dashboard
     `),
-    tags: ["login", "smoke"],
   },
 ];
 ```
@@ -80,45 +76,23 @@ const testCases = [
 npm run bulk
 ```
 
-### Valores de configuración
+4. Selecciona la carpeta de destino:
 
-#### Severity (Severidad):
+📁 Selección de carpeta (Suite)
 
-- `0` = Not Set
-- `1` = Blocker
-- `2` = Critical
-- `3` = Major
-- `4` = Normal
-- `5` = Minor
-- `6` = Trivial
+Carpetas disponibles:
 
-#### Priority (Prioridad):
+1. Login Feature (3 test cases)
+2. Regression (0 test cases)
+3. Crear nueva carpeta
+4. No usar carpeta (root level)
 
-- `0` = Not Set
-- `1` = High
-- `2` = Medium
-- `3` = Low
+Elegí una opción: ...
 
-#### Type (Tipo):
+5. Confirmar creación
 
-- `1` = Other
-- `2` = Functional
-- `3` = Smoke
-- `4` = Regression
-- `5` = Security
-- `6` = Usability
-- `7` = Performance
-- `8` = Acceptance
-- `9` = Compatibility
-- `10` = Integration
-- `11` = Exploratory
+```
 
-#### Layer (Capa):
-
-- `0` = Not Set
-- `1` = E2E
-- `2` = API
-- `3` = Unit
 
 ### Generación automática de Expected Results
 
@@ -133,22 +107,23 @@ La función `createSteps()` genera automáticamente los expected results basánd
 ## 📁 Estructura del proyecto
 
 ```
+
 qase-bulk-automation
 src/
-├── qase-api.ts                # API client
-├── bulk-create.ts             # Script principal de creación de TC
+├── qase-api.ts # API client
+├── bulk-create.ts # Script principal de creación de TC
 └── utils/
-|    ├── step-parser.ts        # autogenerador de Expected
-|    ├── suite-selector.ts
-|    ├── prompt.ts
-|    └── bulk-manager.ts
-├── .env                        # Variables de entorno (no commitear)
+| ├── step-parser.ts # autogenerador de Expected
+| ├── suite-selector.ts
+| ├── prompt.ts
+| └── bulk-manager.ts
+├── .env # Variables de entorno (no commitear)
 ├── .gitignore
 ├── package.json
 ├── tsconfig.json
 └── README.md
 
-```
+````
 
 ## 🔒 Seguridad
 
@@ -171,7 +146,7 @@ La herramienta incluye un delay de 100ms entre cada request para respetar los l�
 
 ```bash
 npm run build
-```
+````
 
 ### Ejecutar en modo desarrollo:
 
@@ -187,9 +162,6 @@ npm run dev
 const loginTests = [
   {
     title: "Login con credenciales válidas",
-    severity: 2,
-    priority: 1,
-    type: 3,
     steps: createSteps(`
       Abrir página de login
       Ingresar usuario válido
@@ -197,13 +169,9 @@ const loginTests = [
       Click en botón login
       Verificar redirección a dashboard
     `),
-    tags: ["login", "smoke"],
   },
   {
     title: "Login con password incorrecto",
-    severity: 2,
-    priority: 1,
-    type: 2,
     steps: createSteps(`
       Abrir página de login
       Ingresar usuario válido
@@ -211,7 +179,6 @@ const loginTests = [
       Click en botón login
       Verificar mensaje de error
     `),
-    tags: ["login", "negative"],
   },
 ];
 ```
@@ -222,16 +189,11 @@ const loginTests = [
 const apiTests = [
   {
     title: "GET /users endpoint returns 200",
-    severity: 3,
-    priority: 2,
-    type: 2,
-    layer: 2, // API layer
     steps: createSteps(`
       Send GET request to /users endpoint
       Verify response status is 200
       Verify response contains user array
     `),
-    tags: ["api", "regression"],
   },
 ];
 ```

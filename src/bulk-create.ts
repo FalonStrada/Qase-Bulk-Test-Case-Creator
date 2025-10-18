@@ -48,7 +48,7 @@ async function main() {
       `),
       
     }
-    // Agregá más test cases acá máximo 10 en total...
+    // Agregá más test cases acá...
   ];
 
  // Esta función maneja todo: selección de suite, preview, confirmación y creación

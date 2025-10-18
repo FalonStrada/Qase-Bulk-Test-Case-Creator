@@ -130,12 +130,14 @@ qase-bulk-automation
 - El `.gitignore` está configurado para excluirlo automáticamente
 - No compartas tu API token públicamente
 
-## 🚦 Rate Limiting
+## 🚦 Rate Limiting y Performance
 
 La herramienta incluye un delay de 100ms entre cada request para respetar los límites de la API de Qase:
 
-- Máximo recomendado: 10 requests/segundo
-- Para grandes volúmenes (500+ tests), considera dividir en múltiples ejecuciones
+- **Recomendado**: 10-100 test cases por ejecución
+- **Máximo seguro**: 200 test cases (~20 segundos)
+- **Rate limit de Qase**: 600 requests/minuto
+- Para volúmenes mayores (500+), dividir en múltiples ejecuciones
 
 ## 🛠️ Desarrollo
 

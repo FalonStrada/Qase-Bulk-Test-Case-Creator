@@ -182,10 +182,22 @@ export class QaseAPI {
 
   async getSuites(): Promise<Suite[]> {
     try {
-      const response = await this.client.get<QaseResponse<{ entities: Suite[] }>>(
-        `/suite/${this.projectCode}`
-      );
-      return response.data.result.entities;
+      const limit = 100;
+      let offset = 0;
+      let allSuites: Suite[] = [];
+
+      while (true) {
+        const response = await this.client.get<QaseResponse<{ entities: Suite[]; total: number; count: number }>>(
+          `/suite/${this.projectCode}`,
+          { params: { limit, offset } }
+        );
+        const { entities, total } = response.data.result;
+        allSuites = allSuites.concat(entities);
+        offset += entities.length;
+        if (offset >= total) break;
+      }
+
+      return allSuites;
     } catch (error) {
       this.handleError(error, 'obtener suites');
       return [];

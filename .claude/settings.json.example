@@ -1,0 +1,20 @@
+{
+  "mcpServers": {
+    "jira": {
+      "command": "uvx",
+      "args": ["mcp-atlassian"],
+      "env": {
+        "JIRA_URL": "https://tu-empresa.atlassian.net",
+        "JIRA_USERNAME": "tu-email@empresa.com",
+        "JIRA_API_TOKEN": "tu_token_aqui"
+      }
+    },
+    "playwright": {
+      "command": "npx",
+      "args": ["@playwright/mcp@latest"],
+      "env": {
+        "BASE_URL": "https://tu-ambiente-de-prueba.com"
+      }
+    }
+  }
+}

@@ -1,30 +1,30 @@
 ## Qase Bulk Test Case Creator
 
-Herramienta de automatización para creación masiva de test cases en Qase mediante API, desarrollada para agilizar el proceso de documentación de pruebas.
+Herramienta de automatización para creación masiva de test cases en Qase mediante API, diseñada para integrarse con Claude Code como asistente de diseño de pruebas.
 
 ## 🚀 Características
 
-- ✅ Creación masiva de test cases (bulk creation)
-- ✅ Conversión automática de steps en formato natural a JSON
-- ✅ Generación inteligente de expected results
-- ✅ Rate limiting automático para evitar problemas con la API
-- ✅ Type safety con TypeScript
-- ✅ Configuración mediante variables de entorno
+- ✅ Creación masiva de test cases via API de Qase
+- ✅ Parser bilingüe: detecta el idioma de los steps y genera expected results en el mismo idioma
+- ✅ Generación inteligente de expected results con contexto por tipo de acción
+- ✅ Selección interactiva de suite con soporte de paginación (100+ suites)
+- ✅ Preview y confirmación antes de crear
+- ✅ Rate limiting automático
+- ✅ Integración con Claude Code vía MCP (Jira, Playwright)
 
 ## 📋 Prerequisitos
 
 - Node.js (v16 o superior)
 - npm o yarn
-- Cuenta en Qase.io
-- API Token de Qase
+- Cuenta en Qase.io con API Token
 
 ## 🔧 Instalación
 
 1. **Clonar el repositorio:**
 
 ```bash
-git clone https://github.com/tu-usuario/qase-bulk-automation.git
-cd qase-bulk-automation
+git clone https://github.com/FalonStrada/Qase-Bulk-Test-Case-Creator.git
+cd Qase-Bulk-Test-Case-Creator
 ```
 
 2. **Instalar dependencias:**
@@ -33,181 +33,171 @@ cd qase-bulk-automation
 npm install
 ```
 
-3. **Configurar variables de entorno:**
-
-Crear un archivo `.env` en la raíz del proyecto:
+3. **Configurar variables de entorno** — crear `.env` en la raíz:
 
 ```env
 QASE_API_TOKEN=tu_token_de_api_aqui
 QASE_PROJECT_CODE=CODIGO_PROYECTO
 ```
 
-Para obtener tu API token:
+Para obtener tu API token: Qase.io → Settings → API Tokens
 
-- Ve a Qase.io → Settings → API Tokens
-- Genera un nuevo token y cópialo
+4. **Preparar tu archivo de trabajo:**
 
-## 📖 Uso
+```bash
+cp src/bulk-create.example.ts src/bulk-create.ts
+```
 
-### Creación básica de test cases
+> `bulk-create.ts` está configurado como untracked localmente (`git update-index --skip-worktree`) — editalo libremente sin riesgo de committear test cases de proyectos específicos.
 
-1. Abre el archivo `src/bulk-create.ts`
+## 🤖 Flujo con Claude Code
 
-2. Edita el array `testCases` con tus casos de prueba:
+Este proyecto incluye un `CLAUDE.md` con instrucciones para que Claude Code actúe como QA engineer senior. El flujo típico es:
+
+1. **Pasás una US, descripción o screenshot** de la funcionalidad a testear
+2. **Claude realiza un pre-análisis**: identifica supuestos, puntos ciegos, dimensiones a cubrir y aplica técnicas de diseño (equivalence partitioning, boundary value, state transition, etc.)
+3. **Claude genera los test cases** en el mismo idioma de la US o screenshot, y los muestra para aprobación
+4. **Una vez aprobados**, los escribe en `src/bulk-create.ts`
+5. **Ejecutás `npm run bulk`** para subirlos a Qase
+
+### Integración con MCPs
+
+Con los MCPs de **Jira** y **Playwright** activos en Claude Code:
+
+- **Jira MCP**: Claude puede leer tickets directamente y generar test cases a partir de los criterios de aceptación
+- **Playwright MCP**: Claude puede iterar con el ambiente de prueba para validar comportamientos antes de documentarlos
+
+## 📖 Uso manual
+
+Editá el array `testCases` en `src/bulk-create.ts`:
 
 ```typescript
 const testCases = [
   {
-    title: "Verify login with valid credentials",
+    title: "Verificar login con credenciales válidas",
     steps: createSteps(`
-      Navigate to login page
-      Enter valid username
-      Enter valid password
-      Click login button
-      Verify user is redirected to dashboard
+      Navegar a la página de login
+      Ingresar usuario válido
+      Ingresar contraseña válida
+      Hacer clic en el botón iniciar sesión
+      Verificar redirección al dashboard
     `),
   },
 ];
 ```
 
-3. Ejecuta el script:
+Luego ejecutá:
 
 ```bash
 npm run bulk
 ```
 
-4. Selecciona la carpeta de destino:
+## 🧠 Parser bilingüe — `createSteps()`
 
-📁 Selección de carpeta (Suite)
+Detecta el idioma por los verbos de cada línea y genera el `expected_result` en ese mismo idioma. Funciona tanto si los steps vienen generados por Claude como si los escribís manualmente.
 
-Carpetas disponibles:
+**Steps en español** → expected results en español:
 
-1. Login Feature (3 test cases)
-2. Regression (0 test cases)
-3. Crear nueva carpeta
-4. No usar carpeta (root level)
+```typescript
+createSteps(`
+  Navegar a la página de login
+  Ingresar usuario válido
+  Hacer clic en el botón enviar
+  Verificar mensaje de error
+`)
+```
 
-Elegí una opción: ...
+**Steps en inglés** → expected results en inglés:
 
-5. Confirmar creación
+```typescript
+createSteps(`
+  Navigate to login page
+  Enter valid username
+  Click submit button
+  Verify error message is displayed
+`)
+```
 
-## 🤖 Generación automática de Expected Results
+Para casos donde el expected result necesita precisión exacta (negativos, borde, seguridad), usá el formato directo:
 
-La función `createSteps()` genera automáticamente los expected results basándose en palabras clave:
+```typescript
+steps: [
+  { action: "Ingresar 256 caracteres en el campo nombre", expected_result: "El campo rechaza el input y muestra el error de límite" },
+  { action: "Hacer clic en Guardar", expected_result: "El formulario no se envía" }
+]
+```
 
-- **"navigate", "open"** → "Page is displayed"
-- **"click"** → "Element is clicked and action performed"
-- **"enter", "type"** → "Data is entered correctly"
-- **"verify"** → "[condición] is correct"
-- **Por defecto** → "Step completed successfully"
+**Categorías reconocidas por el parser:**
+
+| Categoría | EN | ES |
+|-----------|----|----|
+| Navegación | `navigate`, `open`, `go to` | `navegar`, `abrir`, `ir a` |
+| Clicks | `click`, `press`, `tap` | `hacer clic`, `presionar` |
+| Input | `enter`, `type`, `fill` | `ingresar`, `tipear`, `completar` |
+| Verificación | `verify`, `check`, `validate` | `verificar`, `comprobar`, `validar` |
+| Login/Logout | `login`, `sign in/out` | `iniciar/cerrar sesión` |
+| Email | `email`, `mail` | `correo`, `mensaje` |
+| Archivos | `upload`, `download`, `attach` | `subir`, `descargar`, `adjuntar` |
+| Búsqueda | `search`, `filter` | `buscar`, `filtrar` |
+| Submit/Guardar | `submit`, `save`, `create` | `enviar`, `guardar`, `crear` |
+| Eliminar | `delete`, `remove`, `clear` | `eliminar`, `borrar`, `limpiar` |
+| Scroll | `scroll`, `swipe` | `desplazar`, `deslizar` |
 
 ## 📁 Estructura del proyecto
 
-```bash
-qase-bulk-automation
+```
+Qase-Bulk-Test-Case-Creator/
 ├── src/
-│   ├── qase-api.ts             # API client
-│   ├── bulk-create.ts          # Script principal de creación de TC
+│   ├── qase-api.ts                 # API client + types
+│   ├── bulk-create.ts              # Tu archivo de trabajo (untracked)
+│   ├── bulk-create.example.ts      # Plantilla de referencia (trackeado)
 │   └── utils/
-│       ├── step-parser.ts      # Autogenerador de Expected results
-│       ├── suite-selector.ts
-│       ├── prompt.ts
-│       └── bulk-manager.ts
-├── .env                        # Variables de entorno (no commitear)
+│       ├── step-parser.ts          # Parser bilingüe con expected results inteligentes
+│       ├── suite-selector.ts       # Selección interactiva de suite
+│       ├── prompt.ts               # Helpers de input por consola
+│       └── bulk-manager.ts         # Orquestador principal
+├── CLAUDE.md                       # Instrucciones para Claude Code (untracked)
+├── .env                            # Variables de entorno (no committear)
 ├── .gitignore
 ├── package.json
 ├── tsconfig.json
 └── README.md
-
-
 ```
+
+> Archivos untracked localmente: `bulk-create.ts` y `CLAUDE.md` (`git update-index --skip-worktree`). Para volver a trackear alguno: `git update-index --no-skip-worktree <archivo>`
 
 ## 🔒 Seguridad
 
-**IMPORTANTE:**
-
-- Nunca commitees el archivo `.env` a Git
-- El `.gitignore` está configurado para excluirlo automáticamente
+- Nunca commitees `.env`
+- `bulk-create.ts` es untracked para evitar filtrar test cases de proyectos internos
+- `CLAUDE.md` es untracked para mantener instrucciones personales fuera del repo
 - No compartas tu API token públicamente
 
-## 🚦 Rate Limiting y Performance
+## 🚦 Rate Limiting
 
-La herramienta incluye un delay de 100ms entre cada request para respetar los límites de la API de Qase:
+| Volumen | Tiempo estimado |
+|---------|----------------|
+| 10–100 TCs | < 10 seg |
+| ~200 TCs | ~20 seg |
+| 500+ TCs | Dividir en múltiples ejecuciones |
 
-- **Recomendado**: 10-100 test cases por ejecución
-- **Máximo seguro**: 200 test cases (~20 segundos)
-- **Rate limit de Qase**: 600 requests/minuto
-- Para volúmenes mayores (500+), dividir en múltiples ejecuciones
+Rate limit de Qase: 600 requests/minuto.
 
-## 🛠️ Desarrollo
-
-### Compilar TypeScript:
-
-```bash
-npm run build
-```
-
-### Ejecutar en modo desarrollo:
+## 🛠️ Comandos
 
 ```bash
-npm run dev
-```
-
-## 📝 Ejemplos
-
-### Crear tests de login:
-
-```typescript
-const loginTests = [
-  {
-    title: "Login con credenciales válidas",
-    steps: createSteps(`
-      Abrir página de login
-      Ingresar usuario válido
-      Ingresar contraseña válida
-      Click en botón login
-      Verificar redirección a dashboard
-    `),
-  },
-  {
-    title: "Login con password incorrecto",
-    steps: createSteps(`
-      Abrir página de login
-      Ingresar usuario válido
-      Ingresar contraseña inválida
-      Click en botón login
-      Verificar mensaje de error
-    `),
-  },
-];
-```
-
-### Crear tests de API:
-
-```typescript
-const apiTests = [
-  {
-    title: "GET /users endpoint returns 200",
-    steps: createSteps(`
-      Send GET request to /users endpoint
-      Verify response status is 200
-      Verify response contains user array
-    `),
-  },
-];
+npm run bulk   # Crear test cases en Qase
+npm run dev    # Modo desarrollo
+npm run build  # Compilar TypeScript
 ```
 
 ## 🤝 Contribuciones
 
-Si encontrás bugs o tenés sugerencias, creá un issue o pull request.
+Issues y PRs bienvenidos en [FalonStrada/Qase-Bulk-Test-Case-Creator](https://github.com/FalonStrada/Qase-Bulk-Test-Case-Creator).
 
 ## 📄 Licencia
 
-MIT
-
-## 👤 Autor
-
-Falon Strada QA Engineer - Automatización de procesos de testing
+MIT — Falon Strada, QA Engineer.
 
 ## 🔗 Links útiles
 
@@ -216,4 +206,4 @@ Falon Strada QA Engineer - Automatización de procesos de testing
 
 ---
 
-**Nota:** Esta herramienta fue desarrollada para uso interno del equipo de QA y no está afiliada oficialmente con Qase.io.
+**Nota:** Esta herramienta no está afiliada oficialmente con Qase.io.

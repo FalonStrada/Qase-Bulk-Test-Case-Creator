@@ -28,7 +28,7 @@ export function createSteps(stepsText: string): TestStep[] {
 }
 
 function detectLanguage(action: string): Lang {
-  const spanishVerbs = /\b(navegar|ir a|abrir|acceder|visitar|hacer clic|clicar|presionar|pulsar|tocar|ingresar|tipear|escribir|completar|llenar|verificar|comprobar|validar|asegurar|seleccionar|elegir|escoger|esperar|encontrar|localizar|correo|subir|cargar|descargar|adjuntar|desplazar|deslizar|arrastrar|iniciar sesión|cerrar sesión|enviar|guardar|crear|actualizar|eliminar|borrar|limpiar|quitar|recargar|cerrar|descartar|cancelar|buscar|filtrar)\b/i;
+  const spanishVerbs = /\b(navegar|ir a|abrir|acceder|visitar|hacer clic|clicar|presionar|pulsar|tocar|ingresar|tipear|escribir|completar|llenar|verificar|comprobar|confirmar|validar|asegurar|seleccionar|elegir|escoger|esperar|encontrar|localizar|correo|subir|cargar|descargar|adjuntar|desplazar|deslizar|arrastrar|iniciar sesión|cerrar sesión|enviar|guardar|crear|actualizar|eliminar|borrar|limpiar|quitar|recargar|cerrar|descartar|cancelar|buscar|filtrar|asignar|activar|desactivar|habilitar|deshabilitar|expandir|contraer|marcar|desmarcar|observar|revisar|mostrar)\b/i;
   return spanishVerbs.test(action) ? 'es' : 'en';
 }
 
@@ -232,7 +232,7 @@ function handleInputAction(action: string, lang: Lang): string {
 }
 
 function handleVerificationAction(action: string, lang: Lang): string {
-  const verbPattern = /verify|check|ensure|confirm|validate|assert|verificar|comprobar|confirmar|validar|asegurar/i;
+  const verbPattern = /verificar|comprobar|confirmar|validar|asegurar|verify|check|ensure|confirm|validate|assert/i;
   const verifyMatch = action.match(verbPattern);
   const lowerAction = action.toLowerCase();
 
